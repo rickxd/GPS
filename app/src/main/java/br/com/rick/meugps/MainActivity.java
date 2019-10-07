@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        locaisList = new ArrayList<String>();
+        locaisList = new ArrayList<>();
         locationTextView = findViewById(R.id.locationTextView);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -70,8 +70,10 @@ public class MainActivity extends AppCompatActivity {
             public void onLocationChanged(Location location) {
                 double lat = location.getLatitude();
                 double lon = location.getLongitude();
-                latitudeAtual = lat;
-                longitudeAtual = lon;
+               /* Localizacao localizacao = new Localizacao();
+                localizacao.setLat(lat);
+                localizacao.setLon(lon);
+                */
                 locationTextView.setText(String.format("%f, %f", lat, lon));
                 if(locaisList.size() < 50){
                     locaisList.add(locationTextView.getText().toString());

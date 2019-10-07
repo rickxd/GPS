@@ -1,8 +1,11 @@
 package br.com.rick.meugps;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -23,16 +26,17 @@ public class ListaLocaisActivity extends AppCompatActivity {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, lista);
         locaisListView.setAdapter(adapter);
 
+        locaisListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                //Intent intent = new Intent (ListaChamadosActivity.this, DetalhesChamadoActivity.class );
+                //intent.putExtra("chamado_escolhido", chamados.get(position));
+                //startActivity(intent);
+                Uri gmmIntentUri = Uri.parse("geo:"+lista.get(position));
+                Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                mapIntent.setPackage("com.google.android.apps.maps");
+                startActivity(mapIntent);
+            }
+        });
     }
-
-    /*
-    locaisListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-        @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            Intent intent = new Intent (ListaChamadosActivity.this, DetalhesChamadoActivity.class );
-            intent.putExtra("chamado_escolhido", chamados.get(position));
-            startActivity(intent);
-        }
-    });
-     */
 }
