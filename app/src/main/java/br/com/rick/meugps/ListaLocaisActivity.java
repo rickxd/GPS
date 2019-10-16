@@ -12,18 +12,19 @@ import android.widget.ListView;
 import java.util.ArrayList;
 
 public class ListaLocaisActivity extends AppCompatActivity {
-
-    private ArrayList<String> lista;
+    LocalizacaoDAO dao;
+    private ArrayList<Localizacao> lista;
     private ListView locaisListView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lista_locais);
+        dao = new LocalizacaoDAO(this);
         locaisListView = findViewById(R.id.locaisListView);
         Intent origemIntent = getIntent();
-        lista = origemIntent.getStringArrayListExtra("lista_locais");
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, lista);
+        lista = dao.busca();
+        ArrayAdapter<Localizacao> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, lista);
         locaisListView.setAdapter(adapter);
 
         locaisListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

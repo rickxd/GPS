@@ -19,17 +19,14 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.ArrayList;
-
 public class MainActivity extends AppCompatActivity {
-
+    private LocalizacaoDAO dao;
     private LocationManager locationManager;
     private LocationListener locationListener;
     public static final int  REQUEST_CODE_GPS = 7;
     private TextView locationTextView;
     private double latitudeAtual;
     private double longitudeAtual;
-    private ArrayList<String> locaisList;
 
 
 
@@ -37,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        locaisList = new ArrayList<>();
+        dao = new LocalizacaoDAO(this);
         locationTextView = findViewById(R.id.locationTextView);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -59,7 +56,6 @@ public class MainActivity extends AppCompatActivity {
                 mapIntent.setPackage("com.google.android.apps.maps");
                 startActivity(mapIntent);*/
                 Intent listIntent = new Intent(MainActivity.this, ListaLocaisActivity.class);
-                listIntent.putExtra("lista_locais", locaisList);
                 startActivity(listIntent);
 
             }
@@ -70,17 +66,10 @@ public class MainActivity extends AppCompatActivity {
             public void onLocationChanged(Location location) {
                 double lat = location.getLatitude();
                 double lon = location.getLongitude();
-               /* Localizacao localizacao = new Localizacao();
+                Localizacao localizacao = new Localizacao();
                 localizacao.setLat(lat);
                 localizacao.setLon(lon);
-                */
-                locationTextView.setText(String.format("%f, %f", lat, lon));
-                if(locaisList.size() < 50){
-                    locaisList.add(locationTextView.getText().toString());
-                }else{
-                    locaisList.remove(0);
-                    locaisList.add(locationTextView.getText().toString());
-                }
+                dao.insertLocal(localizacao);
             }
             @Override
             public void onStatusChanged(String provider, int status, Bundle
